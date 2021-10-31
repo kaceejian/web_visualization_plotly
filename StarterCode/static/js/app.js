@@ -17,6 +17,27 @@ function parseSampleData(index) {
     }
 }
 
+function drawBarGraph(index) {
+  const margin = { top:50, right: 50, bottom: 50, left: 60 },
+    width = 500 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+  const sampleData = parseSampleData(index)
+    .map((dataPoint) => ({ ...dataPoint, otu_id: "OTU" + dataPoint.otu_id}))
+    .slice(0, 10);
+    
+  var xScale = d3
+    .scaleLinear()
+    .domain([0, sampleData[0].sample_value])
+    .range([0, width]);
+  var yScale = d3
+    .scaleBand()
+    .domain(
+      sampleData.map(function (otu) {
+        return otu.otu_id;
+      })
+    )
+}
 
 
 
