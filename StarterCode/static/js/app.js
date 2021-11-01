@@ -17,9 +17,9 @@ function parseSampleData(index) {
 }
 
 function drawBarGraph(index) {
-  const margin = { top: 60, right: 60, bottom: 50, left: 60 },
-    width = 600 - margin.left - margin.right,
-    height = 600 - margin.top - margin.bottom;
+  const margin = { top: 50, right: 50, bottom: 50, left: 60 },
+    width = 500 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
 
   const sampleData = parseSampleData(index)
     .map((dataPoint) => ({ ...dataPoint, otu_id: "OTU" + dataPoint.otu_id }))
@@ -37,7 +37,21 @@ function drawBarGraph(index) {
       })
     )
     .range([height, 0]);
-}
+
+d3.select("#bar").select("svg").remove();
+
+var svg = d3
+
+
+
+
+
+
+
+
+
+
+
 
 //   d3.json("./samples.json").then(function (data) {
 //     var sample = data.samples[0];
