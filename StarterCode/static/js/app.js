@@ -41,7 +41,15 @@ function drawBarGraph(index) {
 d3.select("#bar").select("svg").remove();
 
 var svg = d3
+  .select("#bar")
+  .append("svg")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+var barContainer = svg.append("g").attr("id", "bars");
+  )
 
 
 
