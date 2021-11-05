@@ -49,6 +49,19 @@ var svg = d3
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 var barContainer = svg.append("g").attr("id", "bars");
+
+var padding = yScale.bandwidth() * 0.25;
+var bars = barContainer
+  .selectAll()
+  .data(sampleData)
+  .enter()
+  .append("rect")
+  .attr("x", 0)
+  .attr(
+    "y",
+    (dataPoint) =>
+      height -
+      (yScale(dataPoint.otu_id))
   )
 
 
