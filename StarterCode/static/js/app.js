@@ -38,41 +38,48 @@ function drawBarGraph(index) {
     )
     .range([height, 0]);
 
-d3.select("#bar").select("svg").remove();
+  d3.select("#bar").select("svg").remove();
 
-var svg = d3
-  .select("#bar")
-  .append("svg")
-  .attr("width", width + margin.left + margin.right)
-  .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  var svg = d3
+    .select("#bar")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var barContainer = svg.append("g").attr("id", "bars");
+  var barContainer = svg.append("g").attr("id", "bars");
 
-var padding = yScale.bandwidth() * 0.25;
-var bars = barContainer
-  .selectAll()
-  .data(sampleData)
-  .enter()
-  .append("rect")
-  .attr("x", 0)
-  .attr(
-    "y",
-    (dataPoint) =>
-      height -
-      (yScale(dataPoint.otu_id))
-  )
+  var padding = yScale.bandwidth() * 0.25;
+  var bars = barContainer
+    .selectAll()
+    .data(sampleData)
+    .enter()
+    .append("rect")
+    .attr("x", 0)
+    .attr(
+      "y",
+      (dataPoint) =>
+        height -
+        (yScale(dataPoint.otu_id) + padding / 2) -
+        (yScale.bandwidth() - padding)
+    )
 
+    .attr("width", (dataPoint) => xScale(dataPoint.sample_value))
+    .attr("height", yScale.bandwith() - padding)
+    .style("fill", "steelblue");
 
+  var xAxisBars = svg
+    .append("g")
+    .attr("id", "x-axis-bars")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(xScale));
 
-
-
-
-
-
-
-
+  var yAxisBars = svg
+    .append("g")
+    .attr("id", "y-axis-bars")
+    .call(d3.axisLeft(yScale));
+}
 
 //   d3.json("./samples.json").then(function (data) {
 //     var sample = data.samples[0];
