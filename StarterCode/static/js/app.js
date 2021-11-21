@@ -64,7 +64,6 @@ function drawBarGraph(index) {
         (yScale(dataPoint.otu_id) + padding / 2) -
         (yScale.bandwidth() - padding)
     )
-
     .attr("width", (dataPoint) => xScale(dataPoint.sample_value))
     .attr("height", yScale.bandwith() - padding)
     .style("fill", "steelblue");
@@ -79,6 +78,26 @@ function drawBarGraph(index) {
     .append("g")
     .attr("id", "y-axis-bars")
     .call(d3.axisLeft(yScale));
+}
+
+function drawBubbleGraph(index) {
+  const margin = { top: 50, right: 50, bottom: 50, left: 60 },
+    width = 1200 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+  const sampleData = parseSampleData(index);
+
+  const colorScheme = d3.scaleOrdinal(d3.schemeCategory10);
+
+  var xScale = d3
+    .scaleLinera()
+    .domain([
+      -sampleData[0].sample_value,
+      Math.max(...sampleData.map((dataPoint) => dataPoint.otu_id)) +
+        sampleData[0].sample_value,
+    ])
+    .range([0, width]);
+  var yscale = d3;
 }
 
 //   d3.json("./samples.json").then(function (data) {
