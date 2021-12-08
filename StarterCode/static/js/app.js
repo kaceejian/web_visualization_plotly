@@ -97,7 +97,34 @@ function drawBubbleGraph(index) {
         sampleData[0].sample_value,
     ])
     .range([0, width]);
-  var yscale = d3;
+  var yscale = d3
+    .scaleLinear()
+    .domain([0, sampleData[0].sample_value + sampleData[0].sample_value / 2])
+    .range([height, 0]);
+
+  d3.select("#bubble").select("svg").remove();
+  var svg = d3
+    .select("#bubble")
+    .append("svg")
+    .attr("width, width + margin.left + margin.right")
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  var bubbleContainer = svg.append("g").attr("id", "bubbles");
+  var bubbles = bubbleContainer
+    .selectAll()
+    .data(sampleData)
+    .enter()
+    .append("circle")
+    .attr("cx", (dataPoint) => xScale(dataPoint.otu_id))
+    .attr("cy", (dataPoint) => yScale(dataPoint.sample_value))
+    .attr("r", (dataPoint) => dataPoint.sample_value)
+    .style("fill", (dataPoint) => {
+      const color = d3.color(colorScheme(dataPoint.otu_id));
+      color.opacity = 0.7;
+      return color;
+    });
 }
 
 //   d3.json("./samples.json").then(function (data) {
