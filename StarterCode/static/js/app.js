@@ -125,6 +125,32 @@ function drawBubbleGraph(index) {
       color.opacity = 0.7;
       return color;
     });
+
+var xAxisBars = svg
+    .append("g")
+    .attr("id", "x-axis-bars")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(xScale));
+
+var yAxisBars = svg
+  .append("g")
+  .attr("id", "y-axis-bars")
+  .call(d3.axisLeft(yScale));
+  }
+
+  function buildDropdown(names) {
+    for (let i = 0; i < names.length; i++) {
+      const name = name[i];
+      const option = document.createElement("option");
+      option.value = i;
+      option.textContent = name;
+      document.getElementById("selDataset").appendChild(option);
+    }
+  }
+
+
+
+
 }
 
 //   d3.json("./samples.json").then(function (data) {
