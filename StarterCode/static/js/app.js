@@ -22,7 +22,7 @@ function drawBarGraph(index) {
     height = 500 - margin.top - margin.bottom;
 
   const sampleData = parseSampleData(index)
-    .map((dataPoint) => ({ ...dataPoint, otu_id: "OTU" + dataPoint.otu_id }))
+    .map((dataPoint) => ({ ...dataPoint, otu_id: "OTU " + dataPoint.otu_id }))
     .slice(0, 10);
 
   var xScale = d3
@@ -184,7 +184,7 @@ function buildDemographicInfo(index) {
 }
 
 d3.json("./samples.json").then(function (data) {
-  cacheData = data;
+  cachedData = data;
 
   drawBarGraph(0);
   drawBubbleGraph(0);
