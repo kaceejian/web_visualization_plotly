@@ -11,7 +11,7 @@ function parseSampleData(index) {
       };
     })
     .sort(function (otuA, otuB) {
-      return otuB.sample_value - otuA.sample_values;
+      return otuB.sample_value - otuA.sample_value;
     });
   return sampleData;
 }
@@ -90,14 +90,14 @@ function drawBubbleGraph(index) {
   const colorScheme = d3.scaleOrdinal(d3.schemeCategory10);
 
   var xScale = d3
-    .scaleLinera()
+    .scaleLinear()
     .domain([
       -sampleData[0].sample_value,
       Math.max(...sampleData.map((dataPoint) => dataPoint.otu_id)) +
         sampleData[0].sample_value,
     ])
     .range([0, width]);
-  var yscale = d3
+  var yScale = d3
     .scaleLinear()
     .domain([0, sampleData[0].sample_value + sampleData[0].sample_value / 2])
     .range([height, 0]);
@@ -106,7 +106,7 @@ function drawBubbleGraph(index) {
   var svg = d3
     .select("#bubble")
     .append("svg")
-    .attr("width, width + margin.left + margin.right")
+    .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -126,50 +126,74 @@ function drawBubbleGraph(index) {
       return color;
     });
 
-var xAxisBars = svg
+  var xAxisBars = svg
     .append("g")
     .attr("id", "x-axis-bars")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(xScale));
 
-var yAxisBars = svg
-  .append("g")
-  .attr("id", "y-axis-bars")
-  .call(d3.axisLeft(yScale));
-  }
-
-  function buildDropdown(names) {
-    for (let i = 0; i < names.length; i++) {
-      const name = name[i];
-      const option = document.createElement("option");
-      option.value = i;
-      option.textContent = name;
-      document.getElementById("selDataset").appendChild(option);
-    }
-  }
-
-
-
-
+  var yAxisBars = svg
+    .append("g")
+    .attr("id", "y-axis-bars")
+    .call(d3.axisLeft(yScale));
 }
 
-//   d3.json("./samples.json").then(function (data) {
-//     var sample = data.samples[0];
-//     var sampleData = sample.otu.ids.map((otu_id, index) => {
-//       return {
-//         otu_id: otu_id,
-//         sample_value: sample.sample_values[index],
-//         otu_label: sample.otu_labels[index],
-//       };
-//     });
-//     console.log(sampleData);
+function buildDropdown(names) {
+  for (let i = 0; i < names.length; i++) {
+    const name = name[i];
+    const option = document.createElement("option");
+    option.value = i;
+    option.textContent = name;
+    document.getElementById("selDataset").appendChild(option);
+  }
+}
 
-//   var xScale = d3.scaleLinear().domain([0, Math.max(...sample.sample_values)]);
-//   var yScale = d3.
+function buildDemographicInfo(index) {
+  const metadata = cachedData.metadata[index];
+  const metadataContainer = document.getElementById("sample-metadata");
 
-//   var svg = d3
-//     .select("#bar")
-//     .append("svg")
-//     .attr("width", width)
-//     .attr("height", height);
-// });
+  metadataContainer.innerHTML = "";
+
+  const idStat = document.createElement("div");
+  idStat.textContent = "id: " + metadata.id;
+  metadataContainer.appendChild(idStat);
+
+  const ethnicityStat = document.createElement("div");
+  ethnicityStat.textContent = "ethnicity: " + metadata.ethnicity;
+  metadataContainer.appendChild(ethnicityStat);
+
+  const genderStat = document.createElement("div");
+  genderStat.textContent = "gender: " + metadata.gender;
+  metadataContainer.appendChild(genderStat);
+
+  const ageStat = document.createElement("div");
+  ageStat.textContent = "age: " + metadata.age;
+  metadataContainer.appendChild(ageStat);
+
+  const locationStat = document.createElement("div");
+  locationStat.textContent = "location: " + metadata.location;
+  metadataContainer.appendChild(locationStat);
+
+  const bbtypeStat = document.createElement("div");
+  bbtypeStat.textContent = "bbtype: " + metadata.bbtype;
+  metadataContainer.appendChild(bbtypeStat);
+
+  const wfreqStat = document.createElement("div");
+  wfreqStat.textContent = "wfreq: " + metadata.wfreq;
+  metadataContainer.appendChild(wfreqStat);
+}
+
+d3.json("./samples.json").then(function (data) {
+  cacheData = data;
+
+  drawBarGraph(0);
+  drawBubbleGraph(0);
+  buildDemographicInfo(0);
+  buildDropdown(cachedData.names);
+});
+
+function optionChanged(value) {
+  drawBarGraph(value);
+  drawBubbleGraph(value);
+  buildDemographicInfo(value);
+}
