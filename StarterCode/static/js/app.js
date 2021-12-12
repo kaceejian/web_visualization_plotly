@@ -65,7 +65,7 @@ function drawBarGraph(index) {
         (yScale.bandwidth() - padding)
     )
     .attr("width", (dataPoint) => xScale(dataPoint.sample_value))
-    .attr("height", yScale.bandwith() - padding)
+    .attr("height", yScale.bandwidth() - padding)
     .style("fill", "steelblue");
 
   var xAxisBars = svg
@@ -140,7 +140,7 @@ function drawBubbleGraph(index) {
 
 function buildDropdown(names) {
   for (let i = 0; i < names.length; i++) {
-    const name = name[i];
+    const name = names[i];
     const option = document.createElement("option");
     option.value = i;
     option.textContent = name;
